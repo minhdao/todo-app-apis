@@ -18,3 +18,14 @@ var Todo = mongoose.model('Todo', {
         type: Number
     }
 });
+
+// instance of the model
+var newTodo = new Todo({
+    text: 'buy more shorts'
+});
+// save new todo into database
+newTodo.save().then((doc) => {
+    console.log('Successfully saved todo', doc);
+}, (err) => {
+    console.log('Cannot save todo', err);
+});
