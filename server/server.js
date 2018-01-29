@@ -5,3 +5,16 @@ mongoose.Promise = global.Promise;
 
 // connect mongoose to the mongo db
 mongoose.connect('mongodb://localhost:27017/TodoApp');
+
+// create Todo model
+var Todo = mongoose.model('Todo', {
+    text: {
+        type: String
+    },
+    completed: {
+        type: Boolean
+    },
+    completedAt: {
+        type: Number
+    }
+});
