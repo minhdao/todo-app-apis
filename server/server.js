@@ -21,7 +21,9 @@ var Todo = mongoose.model('Todo', {
 
 // instance of the model
 var newTodo = new Todo({
-    text: 'buy more shorts'
+    text: 'buy more shorts',
+    completed: false,
+    completedAt: undefined
 });
 // save new todo into database
 newTodo.save().then((doc) => {
