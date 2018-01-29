@@ -9,21 +9,24 @@ mongoose.connect('mongodb://localhost:27017/TodoApp');
 // create Todo model
 var Todo = mongoose.model('Todo', {
     text: {
-        type: String
+        type: String,
+        require: true,
+        minLength: 1,
+        trim: true
     },
     completed: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     completedAt: {
-        type: Number
+        type: Number,
+        default: null
     }
 });
 
 // instance of the model
 var newTodo = new Todo({
-    text: 'buy more shorts',
-    completed: false,
-    completedAt: undefined
+    text: ' eat ',
 });
 // save new todo into database
 newTodo.save().then((doc) => {
