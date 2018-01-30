@@ -34,6 +34,19 @@ describe('POST /todos', () => {
                 	done(err);
                 });
             });
+    });
 
+    it ('should not create new todo for invalid request', (done) => {
+        var text = '';
+        request(app)
+            .post('/todos')
+            .send({text})
+            .expect(400)
+            .expect(() => {
+                Todo.find().then((todos) => {
+                    expect(todos.length).toBe(0);	
+                });
+            })
+            .end(done);
     });
 });
