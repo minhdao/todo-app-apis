@@ -1,11 +1,10 @@
-// import mongoose module
+// import mongoose to use
 const mongoose = require('mongoose');
-
 // create todo models
 var Todo = mongoose.model('Todo', {
     text: {
         type: String,
-        require: true,
+        required: true,
         minLength: 1,
         trim: true
     },
