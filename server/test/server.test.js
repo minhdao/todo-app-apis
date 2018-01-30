@@ -16,9 +16,9 @@ var todos = [{
 // wipe out data inside Todo collection before testing
 beforeEach((done) => {
     Todo.remove({}).then(() => {
-        Todo.insertMany(todos);
+        return Todo.insertMany(todos);
     }).then(() => {
-        done();	
+        done();
     });
 });
 
@@ -37,9 +37,8 @@ describe('POST /todos', () => {
                 if (err){
                     return done(err);
                 }
-                Todo.find().then((todos) => {
+                Todo.find({text}).then((todos) => {
                     expect(todos.length).toBe(1);
-                    expect(todos[0].text).toBe(text);
                     done();
                 }).catch((err) => {
                 	done(err);
@@ -53,10 +52,17 @@ describe('POST /todos', () => {
             .post('/todos')
             .send({text})
             .expect(400)
-            .expect(() => {
-                Todo.find().then((todos) => {
-                    expect(todos.length).toBe(0);
-                });
+            .end(done);
+    });
+});
+
+// GET /todos
+describe('GET /todos', () => {
+    it ('should get all todos in database', (done) => {
+        request(app)
+            .get('/todos')
+            .expect((res) => {
+            	expect(res.body.todos.length).toBe(3);
             })
             .end(done);
     });
