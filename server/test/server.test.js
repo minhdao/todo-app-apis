@@ -4,6 +4,14 @@ const request = require('supertest');
 const {app} = require('./../server.js');
 const {Todo} = require('./../models/todo.js');
 
+// wipe out data inside Todo collection before testing
+beforeEach((done) => {
+    Todo.remove({}).then(() => {
+        done();
+    });
+});
+
+// POST /todos
 describe('POST /todos', () => {
     it('should create new todo', (done) => {
         var text = 'todo test';
