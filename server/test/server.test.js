@@ -4,10 +4,21 @@ const request = require('supertest');
 const {app} = require('./../server.js');
 const {Todo} = require('./../models/todo.js');
 
+// create some test data
+var todos = [{
+    text: 'do this'
+}, {
+    text: 'do that'
+}, {
+    text: 'do something'
+}];
+
 // wipe out data inside Todo collection before testing
 beforeEach((done) => {
     Todo.remove({}).then(() => {
-        done();
+        Todo.insertMany(todos);
+    }).then(() => {
+        done();	
     });
 });
 
@@ -44,7 +55,7 @@ describe('POST /todos', () => {
             .expect(400)
             .expect(() => {
                 Todo.find().then((todos) => {
-                    expect(todos.length).toBe(0);	
+                    expect(todos.length).toBe(0);
                 });
             })
             .end(done);
