@@ -11,6 +11,9 @@ var todos = [{
     text: 'do that'
 }, {
     text: 'do something'
+}, {
+    _id: '5a704933e0f67e15f2cee781',
+    text: 'do something'
 }];
 
 // wipe out data inside Todo collection before testing
@@ -63,6 +66,19 @@ describe('GET /todos', () => {
             .get('/todos')
             .expect((res) => {
             	expect(res.body.todos.length).toBe(3);
+            })
+            .end(done);
+    });
+});
+
+// GET /todos/:id
+describe('GET /todos', () => {
+    it ('should get todo with specific id in database', (done) => {
+        var id = '5a704933e0f67e15f2cee781';
+        request(app)
+            .get(`/todos/${id}`)
+            .expect((res) => {
+            	expect(res.body.todo._id).toBe(id);
             })
             .end(done);
     });
