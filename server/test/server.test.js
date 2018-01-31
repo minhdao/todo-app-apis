@@ -156,18 +156,4 @@ describe('PATCH /todos/:id', () => {
             })
             .end(done);
     });
-    it ('should return status 404 for INVALID id', (done) => {
-        var invalidID = '5a704933e0f67e15f2cee781xxxxxxxx';
-        request(app)
-            .delete(`/todos/${invalidID}`)
-            .expect(404)
-            .end(done);
-    });
-    it ('should return status 404 for WRONG id', (done) => {
-        var wrongID = '5a704933e0f67e15f2cee123';
-        request(app)
-            .delete(`/todos/${wrongID}`)
-            .expect(404)
-            .end(done);
-    });
 });
