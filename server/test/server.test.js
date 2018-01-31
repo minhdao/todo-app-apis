@@ -136,3 +136,38 @@ describe('DELETE /todos/:id', () => {
             .end(done);
     });
 });
+
+// PATCH /todos/:id
+describe('PATCH /todos/:id', () => {
+    it ('should update todo with specific id in database', (done) => {
+        var id = '5a704933e0f67e15f2cee781';
+        var text = 'this should be updated';
+        request(app)
+            .patch(`/todos/${id}`)
+            .send({
+                completed: true,
+                text
+            })
+            .expect(200)
+            .expect((res) => {
+            	expect(res.body.todo.text).toBe(text);
+                expect(res.body.todo.completed).toBe(true);
+                expect(typeof res.body.todo.completedAt).toBe('number');
+            })
+            .end(done);
+    });
+    it ('should return status 404 for INVALID id', (done) => {
+        var invalidID = '5a704933e0f67e15f2cee781xxxxxxxx';
+        request(app)
+            .delete(`/todos/${invalidID}`)
+            .expect(404)
+            .end(done);
+    });
+    it ('should return status 404 for WRONG id', (done) => {
+        var wrongID = '5a704933e0f67e15f2cee123';
+        request(app)
+            .delete(`/todos/${wrongID}`)
+            .expect(404)
+            .end(done);
+    });
+});
