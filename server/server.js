@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
+const _ = require('lodash');
 
 // load in/import the mongoose
 var {mongoose} = require('./db/mongoose.js');
