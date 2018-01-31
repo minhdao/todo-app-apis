@@ -72,14 +72,29 @@ describe('GET /todos', () => {
 });
 
 // GET /todos/:id
-describe('GET /todos', () => {
+describe('GET /todos/:id', () => {
     it ('should get todo with specific id in database', (done) => {
         var id = '5a704933e0f67e15f2cee781';
         request(app)
             .get(`/todos/${id}`)
+            .expect(200)
             .expect((res) => {
             	expect(res.body.todo._id).toBe(id);
             })
+            .end(done);
+    });
+    it ('should return status 404 for INVALID id', (done) => {
+        var invalidID = '5a704933e0f67e15f2cee781xxxxxxxx';
+        request(app)
+            .get(`/todos/${invalidID}`)
+            .expect(404)
+            .end(done);
+    });
+    it ('should return status 404 for WRONG id', (done) => {
+        var wrongID = '5a704933e0f67e15f2cee123';
+        request(app)
+            .get(`/todos/${wrongID}`)
+            .expect(404)
             .end(done);
     });
 });
