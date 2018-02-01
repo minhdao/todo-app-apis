@@ -9,6 +9,7 @@ var User = mongoose.model('User', {
         required: true,
         minLength: 1,
         trim: true,
+        unique: true,
         validate:{
             validator: (value) => {
                 return validator.isEmail(value);
@@ -19,7 +20,7 @@ var User = mongoose.model('User', {
     password: {
         type: String,
         required: true,
-        minLength: 6
+        minlength: 6
     },
     tokens: [
         {
