@@ -1,3 +1,5 @@
+require('./config/config.js'); // load in config file
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const {ObjectID} = require('mongodb');
@@ -9,7 +11,6 @@ var {mongoose} = require('./db/mongoose.js');
 var {Todo} = require('./models/todo.js');
 var {User} = require('./models/user.js');
 
-var port = process.env.PORT || 3000;
 var app = express();
 
 // middleware
@@ -93,6 +94,7 @@ app.patch('/todos/:id', (req, res) => {
 });
 
 // start server
+var port = process.env.PORT;
 app.listen(port, () => {
     console.log(`Server started port ${port}`);
 });
