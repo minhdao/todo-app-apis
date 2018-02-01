@@ -93,6 +93,21 @@ app.patch('/todos/:id', (req, res) => {
     });
 });
 
+app.post('/users', (req, res) => {
+    // create todo model object
+    var body = _.pick(req.body, ['email', 'password']);
+    var user = new User({
+        email: body.email,
+        password: body.password
+    });
+    // save todo into database
+    user.save().then((doc) => {
+        res.send(doc);
+    }, (err) => {
+        res.status(400).send(err);
+    });
+});
+
 // start server
 var port = process.env.PORT;
 app.listen(port, () => {
