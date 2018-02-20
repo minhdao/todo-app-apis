@@ -96,10 +96,7 @@ app.patch('/todos/:id', (req, res) => {
 app.post('/users', (req, res) => {
     // create todo model object
     var body = _.pick(req.body, ['email', 'password']);
-    var user = new User({
-        email: body.email,
-        password: body.password
-    });
+    var user = new User(body);
     // save todo into database
     user.save().then((doc) => {
         res.send(doc);
