@@ -2,6 +2,7 @@ const validator = require('validator');
 // import mongoose module
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 
 // user schema for User model
 var UserSchema = new mongoose.Schema({
@@ -49,6 +50,13 @@ UserSchema.methods.genAuthToken = function () {
     return user.save().then(() => {
         return token;
     });
+};
+
+// override toJSON method to modify wut data to send back to user
+UserSchema.methods.toJSON = function () {
+    var user = this;
+    var userObj = user.toObject();
+    return _.pick(userObj, ['_id', 'email']);
 };
 
 // create user model
