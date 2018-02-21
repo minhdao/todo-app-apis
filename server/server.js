@@ -97,10 +97,17 @@ app.post('/users', (req, res) => {
     // create todo model object
     var body = _.pick(req.body, ['email', 'password']);
     var user = new User(body);
+    
     // save todo into database
-    user.save().then(() => {
-        return user.genAuthToken();
-    }).then((token) => {
+    // user.save().then(() => { // this code run save 2 times - can be improved
+    //     return user.genAuthToken();
+    // }).then((token) => {
+    //     res.header('x-auth', token).send(user);
+    // }).catch((error) => {
+    //     res.status(400).send(error);
+    // });
+
+    user.genAuthToken().then((token) => {
         res.header('x-auth', token).send(user);
     }).catch((error) => {
         res.status(400).send(error);

@@ -53,6 +53,7 @@ UserSchema.methods.genAuthToken = function () {
 };
 
 // override toJSON method to modify wut data to send back to user
+// maybe creating a brand new function for this task is a better approach
 UserSchema.methods.toJSON = function () {
     var user = this;
     var userObj = user.toObject();
