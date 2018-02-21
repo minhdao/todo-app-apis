@@ -54,7 +54,15 @@ UserSchema.methods.genAuthToken = function () {
 
 // override toJSON method to modify wut data to send back to user
 // maybe creating a brand new function for this task is a better approach
-UserSchema.methods.toJSON = function () {
+// UserSchema.methods.toJSON = function () {
+//     var user = this;
+//     var userObj = user.toObject();
+//     return _.pick(userObj, ['_id', 'email']);
+// };
+
+// function to tailor data to send back to user
+// so overriding toJSON not needed
+UserSchema.methods.tailorData = function () {
     var user = this;
     var userObj = user.toObject();
     return _.pick(userObj, ['_id', 'email']);

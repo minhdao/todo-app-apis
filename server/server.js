@@ -97,7 +97,7 @@ app.post('/users', (req, res) => {
     // create todo model object
     var body = _.pick(req.body, ['email', 'password']);
     var user = new User(body);
-    
+
     // save todo into database
     // user.save().then(() => { // this code run save 2 times - can be improved
     //     return user.genAuthToken();
@@ -108,7 +108,7 @@ app.post('/users', (req, res) => {
     // });
 
     user.genAuthToken().then((token) => {
-        res.header('x-auth', token).send(user);
+        res.header('x-auth', token).send(user.tailorData());
     }).catch((error) => {
         res.status(400).send(error);
     });
