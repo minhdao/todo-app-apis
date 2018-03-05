@@ -114,6 +114,19 @@ app.post('/users', (req, res) => {
     });
 });
 
+// private route with token to authenticate user
+app.get('/users/me', (req, res) => {
+    console.log('/users/me');
+    var token = req.header('x-auth');
+    User.findByToken(token).then((user) => {
+        if (!user) {
+
+        }
+        console.log(user);
+        res.send(user.tailorData());
+    });
+});
+
 // start server
 var port = process.env.PORT;
 app.listen(port, () => {
