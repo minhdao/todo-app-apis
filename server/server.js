@@ -120,12 +120,13 @@ app.get('/users/me', (req, res) => {
     var token = req.header('x-auth');
     User.findByToken(token).then((user) => {
         if (!user) {
-
+            // catch phrase will catch this reject and set status to 401
+            return Promise.reject();
         }
         console.log(user);
         res.send(user.tailorData());
     }).catch((error) => {
-        res.status(401).send();        
+        res.status(401).send();
     });
 });
 
