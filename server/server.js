@@ -114,20 +114,26 @@ app.post('/users', (req, res) => {
     });
 });
 
-// private route with token to authenticate user
-app.get('/users/me', (req, res) => {
-    console.log('/users/me');
+// middleware to authenticate user
+// make the code reusable
+var authenticate = (req, res, next) => {
     var token = req.header('x-auth');
     User.findByToken(token).then((user) => {
         if (!user) {
             // catch phrase will catch this reject and set status to 401
             return Promise.reject();
         }
-        console.log(user);
-        res.send(user.tailorData());
+        req.user = user;
+        req.token = token;
+        next();
     }).catch((error) => {
         res.status(401).send();
     });
+};
+
+// private route with token to authenticate user
+app.get('/users/me',authenticate , (req, res) => {
+    res.send(req.user.tailorData());
 });
 
 // start server
