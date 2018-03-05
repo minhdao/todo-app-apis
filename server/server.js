@@ -124,6 +124,8 @@ app.get('/users/me', (req, res) => {
         }
         console.log(user);
         res.send(user.tailorData());
+    }).catch((error) => {
+        res.status(401).send();        
     });
 });
 
