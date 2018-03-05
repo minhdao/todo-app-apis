@@ -3,6 +3,7 @@ const validator = require('validator');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const bcryptjs = require('bcryptjs');
 
 // user schema for User model
 var UserSchema = new mongoose.Schema({
@@ -36,6 +37,22 @@ var UserSchema = new mongoose.Schema({
             }
         }
     ]
+});
+
+// middleware to check(if pass modified) and hash password before saving to database
+UserSchema.pre('save', function (next) {
+    var user = this;
+    // only hash password when it's first created or modified
+    if (user.isModified('password')){
+        bcryptjs.genSalt(10, (err, salt) => {
+            bcryptjs.hash(user.password, salt, (error, hash) => {
+                user.password = hash;
+                next();
+            });
+        });
+    }else{
+        next();
+    }
 });
 
 // user instance method to create auth token
