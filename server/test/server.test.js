@@ -3,9 +3,10 @@ const request = require('supertest');
 
 const {app} = require('./../server.js');
 const {Todo} = require('./../models/todo.js');
-const {todos, popTodos} = require('./seed/seed.js');
+const {todos, popTodos, users, popUsers} = require('./seed/seed.js');
 
-// wipe out data inside Todo collection before testing
+// wipe out and populate new data inside User and Todo collections before testing
+beforeEach(popUsers);
 beforeEach(popTodos);
 
 // POST /todos
