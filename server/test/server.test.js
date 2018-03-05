@@ -196,4 +196,25 @@ describe('POST /users', () => {
                 });
             });
     });
+    it('should fail if invalid username and password provided', (done) => {
+        request(app)
+            .post('/users')
+            .send({
+                email: 'blah',
+                password: 'bloh'
+            })
+            .expect(400)
+            .end(done);
+    });
+
+    it('should fail if existing username and password provided', (done) => {
+        request(app)
+            .post('/users')
+            .send({
+                email: 'minh@email.com',
+                password: 'jaldsjflasdfl'
+            })
+            .expect(400)
+            .end(done);
+    });
 });
