@@ -141,3 +141,46 @@ describe('PATCH /todos/:id', () => {
             .end(done);
     });
 });
+
+// GET /users/me
+describe('GET /users/me', () => {
+    it('should return user if authenticated', (done) => {
+        request(app)
+            .get('/users/me')
+            .set('x-auth', users[0].tokens[0].token)
+            .expect(200)
+            .expect((res) => {
+                expect(res.body._id).toBe(users[0]._id.toHexString());
+            })
+            .end(done);
+    });
+    it('should return 401 if NOT authenticated', (done) => {
+        request(app)
+            .get('/users/me')
+            .set('x-auth', 'some wrong token')
+            .expect(401)
+            .expect((res) => {
+                expect(res.body).toEqual({});
+            })
+            .end(done);
+    });
+});
+
+// POST /users
+describe('POST /users', () => {
+    it('should create new user provided with valid inputs', (done) => {
+        var email = 'unique@email.com';
+        var password = 'password!!@343';
+        request(app)
+            .post('/users')
+            .send({email, password})
+            .expect(200)
+            .expect((res) => {
+                // expect token generated
+                expect(res.headers['x-auth']).toBeTruthy();
+                // expect res body contain same email sent in
+                expect(res.body.email).toBe(email);
+            })
+            .end(done);
+    });
+});
