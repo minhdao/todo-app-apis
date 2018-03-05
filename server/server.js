@@ -120,6 +120,33 @@ app.get('/users/me',authenticate , (req, res) => {
     res.send(req.user.tailorData());
 });
 
+// login {email, password}
+app.post('/users/login', (req, res) => {
+
+    // pick out email and password from the body object
+    var body = _.pick(req.body, ['email', 'password']);
+    // create user models with provided body data
+    var email = body.email;
+    var password = body.password;
+
+    // find user by provided email and validate the provided password
+    User.findByEmail(email).then((user) => {
+        if(!user){
+            return Promise.reject();
+        }
+        user.validatePassword(password).then((result) => {
+            if(!result){
+                return Promise.reject();
+            }
+            console.log(result);
+            user.genAuthToken();
+            res.status(200).send(user.tailorData());
+        });
+    }).catch((error) => {
+        res.status(401).send({});
+    });
+});
+
 // start server
 var port = process.env.PORT;
 app.listen(port, () => {

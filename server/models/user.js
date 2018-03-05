@@ -106,6 +106,20 @@ UserSchema.statics.findByToken = function (token) {
     });
 };
 
+// Model method to find user by email
+UserSchema.statics.findByEmail = function (email) {
+    var User = this;
+    return User.findOne({
+        'email': email
+    });
+};
+
+// Instance method to validate password
+UserSchema.methods.validatePassword = function (password) {
+    var user = this;
+    return bcryptjs.compare(password, user.password);
+};
+
 // create user model
 var User = mongoose.model('User', UserSchema);
 
