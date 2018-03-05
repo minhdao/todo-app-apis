@@ -4,6 +4,7 @@ const request = require('supertest');
 const {app} = require('./../server.js');
 const {Todo} = require('./../models/todo.js');
 const {todos, popTodos, users, popUsers} = require('./seed/seed.js');
+const {User} = require('./../models/user.js');
 
 // wipe out and populate new data inside User and Todo collections before testing
 beforeEach(popUsers);
@@ -181,6 +182,18 @@ describe('POST /users', () => {
                 // expect res body contain same email sent in
                 expect(res.body.email).toBe(email);
             })
-            .end(done);
+            .end((err) => {
+                if (err) {
+                    return done(err);
+                }
+                // check inside the database itself
+                User.findOne({email}).then((user) => {
+                    // expect user exist and has values
+                    expect(user).toBeTruthy();
+                    // expect password hashed inside db
+                    expect(user.password).not.toBe(password);
+                    done();
+                });
+            });
     });
 });
