@@ -3,27 +3,10 @@ const request = require('supertest');
 
 const {app} = require('./../server.js');
 const {Todo} = require('./../models/todo.js');
-
-// create some test data
-var todos = [{
-    text: 'do this'
-}, {
-    text: 'do that'
-}, {
-    text: 'do something'
-}, {
-    _id: '5a704933e0f67e15f2cee781',
-    text: 'do something'
-}];
+const {todos, popTodos} = require('./seed/seed.js');
 
 // wipe out data inside Todo collection before testing
-beforeEach((done) => {
-    Todo.remove({}).then(() => {
-        return Todo.insertMany(todos);
-    }).then(() => {
-        done();
-    });
-});
+beforeEach(popTodos);
 
 // POST /todos
 describe('POST /todos', () => {
