@@ -14,9 +14,10 @@ beforeEach(popTodos);
 describe('POST /todos', () => {
     it('should create new todo', (done) => {
         var text = 'todo test';
+        var _creator = users[0]._id;
         request(app)
             .post('/todos')
-            .send({text})
+            .send({text, _creator})
             .expect(200)
             .expect((res) => {
                 expect(res.body.text).toBe(text);

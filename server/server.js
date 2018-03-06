@@ -21,7 +21,8 @@ app.use(bodyParser.json()); // take json -> object
 app.post('/todos', (req, res) => {
     // create todo model object
     var todo = new Todo({
-        text: req.body.text
+        text: req.body.text,
+        _creator: req.body._creator
     });
 
     // save todo into database
