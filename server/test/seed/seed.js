@@ -3,20 +3,24 @@ const jwt = require('jsonwebtoken');
 const {Todo} = require('./../../models/todo.js');
 const {User} = require('./../../models/user.js');
 
-// create some test data
-var todos = [{
-    text: 'do this'
-}, {
-    text: 'do that'
-}, {
-    text: 'do something'
-}, {
-    _id: '5a704933e0f67e15f2cee781',
-    text: 'do something'
-}];
-
 var userOneId = new ObjectID();
 var userTwoId = new ObjectID();
+
+// create some test data
+var todos = [{
+    text: 'do this',
+    _creator: userOneId
+}, {
+    text: 'do that',
+    _creator: userTwoId
+}, {
+    text: 'do something',
+    _creator: userTwoId
+}, {
+    _id: '5a704933e0f67e15f2cee781',
+    text: 'do something',
+    _creator: userOneId
+}];
 
 var users = [{
     _id: userOneId,
