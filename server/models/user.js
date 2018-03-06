@@ -128,16 +128,12 @@ UserSchema.statics.login = function (email, password) {
         'email': email
     }).then((user) => {
         if (!user) {
-            console.log('email not found');
             return Promise.reject();
         }
         return bcryptjs.compare(password, user.password).then((result) => {
-            console.log('found email, now checking if password matched');
             if (result){
-                console.log('password matched resolve promise with user object');
                 return Promise.resolve(user);
             }else{
-                console.log('password not macthed reject promise');
                 return Promise.reject();
             }
         });
