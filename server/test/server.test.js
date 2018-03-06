@@ -14,10 +14,11 @@ beforeEach(popTodos);
 describe('POST /todos', () => {
     it('should create new todo', (done) => {
         var text = 'todo test';
-        var _creator = users[0]._id;
+        var _creator_token = users[0].tokens[0].token;
         request(app)
             .post('/todos')
-            .send({text, _creator})
+            .set('x-auth', _creator_token)
+            .send({text})
             .expect(200)
             .expect((res) => {
                 expect(res.body.text).toBe(text);
@@ -36,9 +37,11 @@ describe('POST /todos', () => {
     });
 
     it ('should not create new todo for invalid request', (done) => {
+        var _creator_token = users[0].tokens[0].token;
         var text = '';
         request(app)
             .post('/todos')
+            .set('x-auth', _creator_token)
             .send({text})
             .expect(400)
             .end(done);
@@ -47,11 +50,17 @@ describe('POST /todos', () => {
 
 // GET /todos
 describe('GET /todos', () => {
-    it ('should get all todos in database', (done) => {
+    it ('should get all todos created by specific creator in database', (done) => {
+        var _creator_token = users[0].tokens[0].token;
+        var filtered_todos = todos.filter((todo) => {
+            return todo._creator == users[0]._id;
+        });
+        console.log(filtered_todos);
         request(app)
             .get('/todos')
+            .set('x-auth', _creator_token)
             .expect((res) => {
-            	expect(res.body.todos.length).toBe(todos.length);
+            	expect(res.body.todos.length).toBe(filtered_todos.length);
             })
             .end(done);
     });
