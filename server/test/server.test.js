@@ -224,8 +224,8 @@ describe('POST /users/login', () => {
         request(app)
             .post('/users/login')
             .send({
-                email: 'tien@email.com',
-                password: 'hello12345678'
+                email: users[1].email,
+                password: users[1].password
             })
             .expect(200)
             .expect((res) => {
