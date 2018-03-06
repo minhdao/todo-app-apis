@@ -140,6 +140,18 @@ UserSchema.statics.login = function (email, password) {
     });
 };
 
+// Instance method to logout user
+UserSchema.methods.logout = function (token) {
+    var user = this;
+    return user.update({
+        $pull: {
+            tokens: {
+                token
+            }
+        }
+    });
+};
+
 // create user model
 var User = mongoose.model('User', UserSchema);
 

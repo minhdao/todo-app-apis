@@ -156,6 +156,15 @@ app.post('/users/login', (req, res) => {
     });
 });
 
+// DELETE token/logout user
+app.delete('/users/logout',authenticate, (req, res) => {
+    req.user.logout(req.token).then(() => {
+       res.status(200).send({});
+    }, () => {
+       res.status(401).send({});
+    });
+});
+
 // start server
 var port = process.env.PORT;
 app.listen(port, () => {
