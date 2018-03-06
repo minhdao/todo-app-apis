@@ -233,4 +233,15 @@ describe('POST /users/login', () => {
             })
             .end(done);
     });
+
+    it('should NOT gen and return token when provided incorrect email and password', (done) => {
+        request(app)
+            .post('/users/login')
+            .send({
+                email: 'blah@email.com',
+                password: 'jalsdjflasjdfl'
+            })
+            .expect(401)
+            .end(done);
+    });
 });
