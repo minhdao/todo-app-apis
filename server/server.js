@@ -148,8 +148,9 @@ app.post('/users/login', (req, res) => {
 
     // login with provided email and password from user
     User.login(email, password).then((user) => {
-        user.genAuthToken();
-        res.status(200).send(user.tailorData());
+        user.genAuthToken().then((token) => {
+            res.header('x-auth', token).status(200).send(user.tailorData());
+        });
         console.log('login successfully');
     }).catch((error) => {
         console.log('login not successfully');
