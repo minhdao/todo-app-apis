@@ -218,3 +218,19 @@ describe('POST /users', () => {
             .end(done);
     });
 });
+
+describe('POST /users/login', () => {
+    it('should gen and return auth token when provided correct username and password', (done) => {
+        request(app)
+            .post('/users/login')
+            .send({
+                email: 'tien@email.com',
+                password: 'hello12345678'
+            })
+            .expect(200)
+            .expect((res) => {
+                expect(res.headers['x-auth']).toBeTruthy();
+            })
+            .end(done);
+    });
+});
