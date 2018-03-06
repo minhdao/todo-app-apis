@@ -120,6 +120,30 @@ UserSchema.methods.validatePassword = function (password) {
     return bcryptjs.compare(password, user.password);
 };
 
+// Model method to login user
+UserSchema.statics.login = function (email, password) {
+    var User = this;
+
+    return User.findOne({
+        'email': email
+    }).then((user) => {
+        if (!user) {
+            console.log('email not found');
+            return Promise.reject();
+        }
+        return bcryptjs.compare(password, user.password).then((result) => {
+            console.log('found email, now checking if password matched');
+            if (result){
+                console.log('password matched resolve promise with user object');
+                return Promise.resolve(user);
+            }else{
+                console.log('password not macthed reject promise');
+                return Promise.reject();
+            }
+        });
+    });
+};
+
 // create user model
 var User = mongoose.model('User', UserSchema);
 

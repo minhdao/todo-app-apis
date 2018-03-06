@@ -130,19 +130,29 @@ app.post('/users/login', (req, res) => {
     var password = body.password;
 
     // find user by provided email and validate the provided password
-    User.findByEmail(email).then((user) => {
-        if(!user){
-            return Promise.reject();
-        }
-        user.validatePassword(password).then((result) => {
-            if(!result){
-                return Promise.reject();
-            }
-            console.log(result);
-            user.genAuthToken();
-            res.status(200).send(user.tailorData());
-        });
+    // User.findByEmail(email).then((user) => {
+    //     if(!user){
+    //         return Promise.reject();
+    //     }
+    //     user.validatePassword(password).then((result) => {
+    //         if(!result){
+    //             return Promise.reject();
+    //         }
+    //         console.log(result);
+    //         user.genAuthToken();
+    //         res.status(200).send(user.tailorData());
+    //     });
+    // }).catch((error) => {
+    //     res.status(401).send({});
+    // });
+
+    // login with provided email and password from user
+    User.login(email, password).then((user) => {
+        user.genAuthToken();
+        res.status(200).send(user.tailorData());
+        console.log('login successfully');
     }).catch((error) => {
+        console.log('login not successfully');
         res.status(401).send({});
     });
 });
