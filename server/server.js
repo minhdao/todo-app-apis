@@ -18,11 +18,11 @@ var app = express();
 app.use(bodyParser.json()); // take json -> object
 
 // routes config
-app.post('/todos', (req, res) => {
+app.post('/todos',authenticate, (req, res) => {
     // create todo model object
     var todo = new Todo({
         text: req.body.text,
-        _creator: req.body._creator
+        _creator: req.user._id
     });
 
     // save todo into database
