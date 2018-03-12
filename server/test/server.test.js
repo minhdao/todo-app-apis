@@ -72,6 +72,7 @@ describe('GET /todos/:id', () => {
         var id = '5a704933e0f67e15f2cee781';
         request(app)
             .get(`/todos/${id}`)
+            .set('x-auth', users[0].tokens[0].token)
             .expect(200)
             .expect((res) => {
             	expect(res.body.todo._id).toBe(id);
@@ -82,6 +83,7 @@ describe('GET /todos/:id', () => {
         var invalidID = '5a704933e0f67e15f2cee781xxxxxxxx';
         request(app)
             .get(`/todos/${invalidID}`)
+            .set('x-auth', users[0].tokens[0].token)
             .expect(404)
             .end(done);
     });
@@ -89,6 +91,7 @@ describe('GET /todos/:id', () => {
         var wrongID = '5a704933e0f67e15f2cee123';
         request(app)
             .get(`/todos/${wrongID}`)
+            .set('x-auth', users[0].tokens[0].token)
             .expect(404)
             .end(done);
     });
