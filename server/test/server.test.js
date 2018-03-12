@@ -166,11 +166,12 @@ describe('DELETE /todos/:id', () => {
 
 // PATCH /todos/:id
 describe('PATCH /todos/:id', () => {
-    it ('should update todo with specific id in database', (done) => {
+    it ('should update todo created by this user id in database', (done) => {
         var id = '5a704933e0f67e15f2cee781';
         var text = 'this should be updated';
         request(app)
             .patch(`/todos/${id}`)
+            .set('x-auth', users[0].tokens[0].token)
             .send({
                 completed: true,
                 text
@@ -180,6 +181,37 @@ describe('PATCH /todos/:id', () => {
             	expect(res.body.todo.text).toBe(text);
                 expect(res.body.todo.completed).toBe(true);
                 expect(typeof res.body.todo.completedAt).toBe('number');
+            })
+            .end(done);
+    });
+    it ('should not update todo created by this user id in database', (done) => {
+        var id = '5a704933e0f67e15f2cee781';
+        var text = 'this should be updated';
+        request(app)
+            .patch(`/todos/${id}`)
+            .set('x-auth', users[1].tokens[0].token)
+            .send({
+                completed: true,
+                text
+            })
+            .expect(404)
+            .end(done);
+    });
+    it ('should clear completed at when todo is not completed', (done) => {
+        var id = '5a704933e0f67e15f2cee781';
+        var text = 'this should be updated';
+        request(app)
+            .patch(`/todos/${id}`)
+            .set('x-auth', users[0].tokens[0].token)
+            .send({
+                completed: false,
+                text
+            })
+            .expect(200)
+            .expect((res) => {
+            	expect(res.body.todo.text).toBe(text);
+                expect(res.body.todo.completed).toBe(false);
+                expect(typeof res.body.todo.completedAt).not.toBe('number');
             })
             .end(done);
     });

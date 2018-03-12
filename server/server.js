@@ -81,8 +81,10 @@ app.delete('/todos/:id', authenticate, (req, res) => {
     });
 });
 
-app.patch('/todos/:id', (req, res) => {
+// edit todos by todo's id
+app.patch('/todos/:id',authenticate, (req, res) => {
     var id = req.params.id;
+    var userId = req.user._id;
     if (!ObjectID.isValid(id)){
         return res.status(404).send();
     }
@@ -95,7 +97,10 @@ app.patch('/todos/:id', (req, res) => {
         body.completedAt = null;
     }
 
-    Todo.findByIdAndUpdate(id, {$set: body}, {new: true}).then((todo) => {
+    Todo.findOneAndUpdate({
+        _id: id,
+        _creator: userId
+    }, {$set: body}, {new: true}).then((todo) => {
         if (!todo) {
             return res.status(404).send();
         }
