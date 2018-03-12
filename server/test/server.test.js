@@ -95,6 +95,14 @@ describe('GET /todos/:id', () => {
             .expect(404)
             .end(done);
     });
+    it ('should NOT return todo if user did not create it', (done) => {
+        var id = '5a704933e0f67e15f2cee781';
+        request(app)
+            .get(`/todos/${id}`)
+            .set('x-auth', users[1].tokens[0].token)
+            .expect(404)
+            .end(done);
+    });
 });
 
 // DELETE /todos/:id
