@@ -68,7 +68,6 @@ app.delete('/todos/:id', authenticate, (req, res) => {
     if (!ObjectID.isValid(id)){
         return res.status(404).send();
     }
-    console.log('delete run');
     Todo.findOneAndRemove({
         _id: id,
         _creator: userId

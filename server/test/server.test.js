@@ -107,7 +107,7 @@ describe('GET /todos/:id', () => {
 
 // DELETE /todos/:id
 describe('DELETE /todos/:id', () => {
-    it ('should delete todo with specific id in database', (done) => {
+    it ('should delete todo with this user created in database', (done) => {
         var id = '5a704933e0f67e15f2cee781';
         request(app)
             .delete(`/todos/${id}`)
@@ -122,6 +122,24 @@ describe('DELETE /todos/:id', () => {
                 }
                 Todo.findById(id).then((todo) => {
                     expect(todo).toBeFalsy();
+                    done();
+                }).catch((err) => {
+                    done(err);
+                });
+            });
+    });
+    it ('should not delete todo this user did not create in database', (done) => {
+        var id = '5a704933e0f67e15f2cee781';
+        request(app)
+            .delete(`/todos/${id}`)
+            .set('x-auth', users[1].tokens[0].token)
+            .expect(404)
+            .end((err, res) => {
+                if(err) {
+                    return done(err);
+                }
+                Todo.findById(id).then((todo) => {
+                    expect(todo).toBeTruthy();
                     done();
                 }).catch((err) => {
                     done(err);
