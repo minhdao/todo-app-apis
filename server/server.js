@@ -61,12 +61,18 @@ app.get('/todos/:id', authenticate, (req, res) => {
     });
 });
 
-app.delete('/todos/:id', (req, res) => {
+// delete todo by todo's id
+app.delete('/todos/:id', authenticate, (req, res) => {
     var id = req.params.id;
+    var userId = req.user._id;
     if (!ObjectID.isValid(id)){
         return res.status(404).send();
     }
-    Todo.findByIdAndRemove(id).then((todo) => {
+    console.log('delete run');
+    Todo.findOneAndRemove({
+        _id: id,
+        _creator: userId
+    }).then((todo) => {
         if (!todo) {
             return res.status(404).send();
         }
