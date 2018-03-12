@@ -35,7 +35,13 @@ var users = [{
 }, {
     _id: userTwoId,
     email: 'tien@email.com',
-    password: 'hello12345678'
+    password: 'hello12345678',
+    tokens: [
+        {
+            access:'auth',
+            token: jwt.sign({_id: userTwoId, access: 'auth'}, 'abc123').toString()
+        }
+    ]
 }];
 
 // populate todos
