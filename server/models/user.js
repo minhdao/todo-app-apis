@@ -61,7 +61,7 @@ UserSchema.methods.genAuthToken = function () {
     // make it clearer when assign 'this' to a specific variable
     var user = this;
     var access = 'auth';
-    var raw_sauce = 'abc123';
+    var raw_sauce = process.env.JWT_SECRET;
     var token = jwt.sign({_id: user._id.toHexString(), access}, raw_sauce).toString();
     user.tokens = user.tokens.concat([{access, token}]);
     return user.save().then(() => {
@@ -91,7 +91,7 @@ UserSchema.statics.findByToken = function (token) {
     var decoded;
 
     try {
-        decoded = jwt.verify(token, 'abc123');
+        decoded = jwt.verify(token, process.env.JWT_SECRET);
     } catch (e) {
         // return new Promise((resolve, reject) => {
         //     reject();
