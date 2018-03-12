@@ -41,12 +41,17 @@ app.get('/todos', authenticate, (req, res) => {
     });
 });
 
-app.get('/todos/:id', (req, res) => {
+// get todo by todo's id
+app.get('/todos/:id', authenticate, (req, res) => {
     var id = req.params.id;
+    var userId = req.user._id;
     if (!ObjectID.isValid(id)){
         return res.status(404).send();
     }
-    Todo.findById(id).then((todo) => {
+    Todo.findOne({
+        _id: id,
+        _creator: userId
+    }).then((todo) => {
         if (!todo) {
             return res.status(404).send();
         }
